@@ -17,7 +17,7 @@ browser -> Traefik (TCP passthrough) -> nginx container -> access log
 ```
 
 - `/go/<target>` answers with a `302` redirect. The script reads the nginx container log (`docker logs`) and counts only `GET` requests with status `302`. `HEAD` requests do not count.
-- The log format contains no client address (nginx only sees the reverse proxy's address anyway). The user agent is used in memory only and is never stored.
+- The log format contains no client address (nginx only sees the reverse proxy's address anyway). The script reads the user agent only to classify a click and never stores it in the database. (The web server's own access log still contains it.)
 - One row per click: time (UTC), target, classification and three numbers about the 30 seconds around the click.
 - Public output is `klicks.json` with daily totals per target and classification, written atomically.
 
